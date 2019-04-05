@@ -6,7 +6,7 @@ import re
 import sys
 
 
-def translate(text, to, source, path, key):
+def translate(text, to, source, path, key = None):
     """
     translating text using google translator or yandex.
     """
@@ -14,14 +14,17 @@ def translate(text, to, source, path, key):
         # using google translator
         t = translator.translate(text, src = source, dest = to).text
     except:
-        # using yandex translator
-        t = "%20".join(text.split(" "))
-        url = f"https://translate.yandex.net/api/v1.5/tr.json/translate?key={key}&text={t}&lang={to}&[format=plain]&[options=1]&[callback=JSONP]"
-        page = Request(url,  headers={'User-Agent': 'Mozilla/5.0'})
-        page = urlopen(page).read()
+        if key:
+            # using yandex translator
+            t = "%20".join(text.split(" "))
+            url = f"https://translate.yandex.net/api/v1.5/tr.json/translate?key={key}&text={t}&lang={to}&[format=plain]&[options=1]&[callback=JSONP]"
+            page = Request(url,  headers={'User-Agent': 'Mozilla/5.0'})
+            page = urlopen(page).read()
 
-        soup = BeautifulSoup(page, "lxml").select("p")
-        t = re.findall("text\":\[\"(.*)\"\]", soup[0].text)[0]
+            soup = BeautifulSoup(page, "lxml").select("p")
+            t = re.findall("text\":\[\"(.*)\"\]", soup[0].text)[0]
+        else:
+            raise IOError('limit reached in Google translator, please enter a Yandex key to use the yandex translator source.')
 
     print(t)
     if ".txt" in path:
