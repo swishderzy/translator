@@ -2,8 +2,9 @@
 An easy to use python translator with multiple api sources
 
 ## Dependencies:
-- py_translator: to install pip install py-translator
-                 link: https://pypi.org/project/py-translator/
+- py_translator: to install ===> pip install py-translator
+
+link: https://pypi.org/project/py-translator/
 
 - other dependencies: bs4, urllib, re, sys
 
